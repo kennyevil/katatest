@@ -27,15 +27,16 @@ for word in dictionary do
   end
 end
 
-for word in six_letter_words do
-  test = word.to_s.slice!(2..4)
-  puts test
+for word in two_letter_words do
+  test = word.to_s.slice!(0..5)
   
-  if three_letter_words.include?(test)
+  if two_letter_words.include?(test)
     puts "aye"
     concatenated_words.push(word)
   end
 
 end
+
+puts six_letter_words[0..6]
 
 puts "there are #{concatenated_words.size} concatenated words"
