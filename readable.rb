@@ -1,42 +1,45 @@
-#!/usr/bin/ruby
+dictionary = File.foreach('dictionary.txt').map { |line| line.split.to_s }
 
-
-dictionary = File.foreach('dictionary.txt').map { |line| line.split(' ') }
-
-one_letter_words = Array.new
-two_letter_words = Array.new
-three_letter_words = Array.new
-four_letter_words = Array.new
-five_letter_words = Array.new
-six_letter_words = Array.new
+words_array = Array.new
+test_array = Array.new
+remainder_array = Array.new
 concatenated_words = Array.new
 
 for word in dictionary do
-  if word.to_s.length == 5 
-    one_letter_words.push(word)
-  elsif word.to_s.length == 6
-    two_letter_words.push(word)
-  elsif word.to_s.length == 7
-    three_letter_words.push(word)
-  elsif word.to_s.length == 8
-    four_letter_words.push(word)
-  elsif word.to_s.length == 9
-    five_letter_words.push(word) 
-  elsif word.to_s.length == 10
-    six_letter_words.push(word)
+  if word.length == 10
+    words_array.push(word)
   end
 end
 
-for word in two_letter_words do
-  test = word.to_s.slice!(0..5)
-  
-  if two_letter_words.include?(test)
-    puts "aye"
-    concatenated_words.push(word)
+for i in 0..4
+  for word in dictionary do
+    if word.length == i + 5
+      test_array.push(word)
+      if i + 5 == 7 
+	remainder_array.push(word)
+      end
+    elsif word.length == 9 - i
+      remainder_array.push(word)
+    end
   end
 
-end
+  puts "#{test_array.size} test words and #{remainder_array.size} remainder words"
 
-puts six_letter_words[0..6]
+  for word in words_array do
+    test = word.slice(2..i+2)
+    remainder = word.slice(i+3..7)
+
+    if test_array.include?("[\"#{test}\"]")
+      if remainder_array.include?("[\"#{remainder}\"]")
+	concatenated_words.push(word) unless concatenated_words.include?(word)
+      end
+    end
+  end
+
+  test_array = []
+  remainder_array = []
+
+end
 
 puts "there are #{concatenated_words.size} concatenated words"
+    
